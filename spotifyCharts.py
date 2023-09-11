@@ -44,7 +44,20 @@ def get_top_artists():
 
 
 # Get most streamed albums ---------------------------------------------------------------------------------------------
+def get_top_albums():
+    url = 'https://chartmasters.org/spotify-most-streamed-albums/?slk=hp'
+    r = requests.get(url)
+    data = r.text
+    data = data[data.find('table_7_row_0'):data.find('!-- /Table body -->')]
 
-#get_top_songs()
-get_top_artists()
-# get_top_albums()
+    soup = BeautifulSoup(data, 'html.parser')
+    td_elements = soup.find_all('td', {'style': ''})
+
+    top_albums = []
+    for i in range(0, len(td_elements), 10):
+        pos = td_elements[i + 1].get_text(strip=True)
+        albumArtist = td_elements[i + 3].get_text('|', strip=True).split('|')
+        streams = td_elements[i + 5].get_text(strip=True)
+        top_albums.append((pos, albumArtist[0], albumArtist[1], streams))
+
+    return top_albums
