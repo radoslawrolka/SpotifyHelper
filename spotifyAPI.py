@@ -62,11 +62,26 @@ def search_artist(artist):
         return None
     return json_result[0]
 
-x = search_artist("The Beatles")
-print(x["id"])
-print(x["name"])
-print(x["genres"])
-print(x["popularity"])
-print(x["followers"]["total"])
-print(x["images"][0]["url"])
+def search_album(album):
+    url = "https://api.spotify.com/v1/search"
+    headers = get_auth_header()
+    query = f"q={album}&type=album&limit=1"
 
+    query_url = url + "?" + query
+    result = get(query_url, headers=headers)
+    json_result = json.loads(result.content)["albums"]["items"]
+    if len(json_result) == 0:
+        return None
+    return json_result[0]
+
+def search_song(song):
+    url = "https://api.spotify.com/v1/search"
+    headers = get_auth_header()
+    query = f"q={song}&type=track&limit=1"
+
+    query_url = url + "?" + query
+    result = get(query_url, headers=headers)
+    json_result = json.loads(result.content)["tracks"]["items"]
+    if len(json_result) == 0:
+        return None
+    return json_result[0]
