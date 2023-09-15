@@ -43,8 +43,6 @@ def get_top_artists():
 
     return top_artists
 
-print(*get_top_artists(), sep='\n')
-
 # Get most streamed albums ---------------------------------------------------------------------------------------------
 def get_top_albums():
     url = 'https://chartmasters.org/spotify-most-streamed-albums/?slk=hp'

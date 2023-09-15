@@ -1,87 +1,97 @@
+from app import app
+from flask import request
 import base64
 import json
-from os import path
-from requests import get, post
+import requests
+import random
+import os
 
-# Spotify API credentials ----------------------------------------------------------------------------------------------
-def get_credentials(clientID, secretID):
-    with open('../.credentials', 'w') as f:
-        f.write(clientID + '\n')
-        f.write(secretID + '\n')
-    return True
-
-def load_credentials():
-    with open('../.credentials') as f:
-        CLIENT_ID = f.readline().strip()
-        CLIENT_SECRET = f.readline().strip()
-    return CLIENT_ID, CLIENT_SECRET
+# utility functions ----------------------------------------------------------------------------------------------------
+def get_random_string(length):
+    chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    result_str = ''.join(random.choice(chars) for _ in range(length))
+    return result_str
 
 # Spotify API token ----------------------------------------------------------------------------------------------------
-def create_token():
-    CLIENT_ID, CLIENT_SECRET = load_credentials()
-    auth_str = CLIENT_ID + ':' + CLIENT_SECRET
-    auth_bytes = auth_str.encode("utf-8")
-    auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
+def get_auth_url():
+    app.config['state'] = get_random_string(16)
+    auth_url = f'{app.config["AUTH_URL"]}?response_type=code' \
+               f'&client_id={app.config["CLIENT_ID"]}' \
+               f'&redirect_uri={app.config["REDIRECT_URI"]}' \
+               f'&scope={app.config["SCOPE"]}' \
+               f'&state={app.config.get("state")}'
+    return auth_url
 
-    url = "https://accounts.spotify.com/api/token"
+def validate_state():
+    return request.args.get('state') == app.config.get('state')
+
+def create_token():
+    code = request.args.get('code')
+    token_data = {
+        'code': code,
+        'redirect_uri': app.config["REDIRECT_URI"],
+        'grant_type': 'authorization_code',
+    }
     headers = {
-        "Authorization": "Basic " + auth_base64,
-        "Content-Type": "application/x-www-form-urlencoded"
+        'Authorization': 'Basic ' + base64.b64encode(
+            f'{app.config["CLIENT_ID"]}:{app.config["CLIENT_SECRET"]}'.encode()).decode(),
     }
-    data = {
-        "grant_type": "client_credentials"
+    response = requests.post(app.config["TOKEN_URL"], data=token_data, headers=headers)
+
+    if response.status_code == 200:
+        token = json.loads(response.text)['access_token']
+        refresh = json.loads(response.text)['refresh_token']
+        with open(".token", "w") as f:
+            f.write(token)
+            f.write("\n")
+            f.write(refresh)
+        return token
+    else:
+        return None
+
+def refresh_token():
+    with open(".token", "r") as f:
+        refresh = f.readlines()[1]
+    token_data = {
+        'refresh_token': refresh,
+        'grant_type': 'refresh_token',
     }
-    result = post(url, headers=headers, data=data)
-    json_result = json.loads(result.content)
-    token = json_result["access_token"]
-    with open("../.token", "w") as f:
-        f.write(token)
-    return token
+    headers = {
+        'Authorization': 'Basic ' + base64.b64encode(
+            f'{app.config["CLIENT_ID"]}:{app.config["CLIENT_SECRET"]}'.encode()).decode(),
+    }
+    response = requests.post(app.config["TOKEN_URL"], data=token_data, headers=headers)
+
+    if response.status_code == 200:
+        token = json.loads(response.text)['access_token']
+        with open(".token", "w") as f:
+            f.write(token)
+            f.write("\n")
+            f.write(refresh)
+        return token
+    else:
+        return None
 
 def get_token():
-    if path.getmtime("../.token") < 3600:
-        with open("../.token", "r") as f:
+    if os.path.getmtime(".token") < 3599:
+        with open(".token", "r") as f:
             token = f.read()
         return token
     else:
-        return create_token()
+        return refresh_token()
 
 def get_auth_header():
     return {"Authorization": "Bearer " + get_token()}
 
 # Spotify API search -----------------------------------------------------------------------------------------------
-def search_artist(artist):
+def search(type, name): # type = [artist/album/track]
     url = "https://api.spotify.com/v1/search"
     headers = get_auth_header()
-    query = f"q={artist}&type=artist&limit=1"
+    query = f"q={name}&type={type}&limit=1"
 
     query_url = url + "?" + query
-    result = get(query_url, headers=headers)
-    json_result = json.loads(result.content)["artists"]["items"]
-    if len(json_result) == 0:
-        return None
-    return json_result[0]
-
-def search_album(album):
-    url = "https://api.spotify.com/v1/search"
-    headers = get_auth_header()
-    query = f"q={album}&type=album&limit=1"
-
-    query_url = url + "?" + query
-    result = get(query_url, headers=headers)
-    json_result = json.loads(result.content)["albums"]["items"]
-    if len(json_result) == 0:
-        return None
-    return json_result[0]
-
-def search_song(song):
-    url = "https://api.spotify.com/v1/search"
-    headers = get_auth_header()
-    query = f"q={song}&type=track&limit=1"
-
-    query_url = url + "?" + query
-    result = get(query_url, headers=headers)
-    json_result = json.loads(result.content)["tracks"]["items"]
+    result = requests.get(query_url, headers=headers)
+    json_result = json.loads(result.content)[type+"s"]["items"]
     if len(json_result) == 0:
         return None
     return json_result[0]
