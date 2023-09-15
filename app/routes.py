@@ -53,7 +53,9 @@ def home():
     return 'Welcome to the Spotify Top Data App!</br> ' \
            '<a href="/get_top_data">get top user data</a></br>' \
            '<a href="/current_play">get current play</a></br>' \
-           '<a href="/most-streamed-songs">most streamed songs</a>'
+           '<a href="/most-streamed-songs">most streamed songs</a></br>' \
+           '<a href="/most-streamed-artists">most streamed artists</a></br>' \
+           '<a href="/most-streamed-albums">most streamed albums</a>'
 
 @app.route('/get_top_data')
 def get_top_data():
@@ -88,9 +90,5 @@ def current_play():
     else:
         return response.text+'Error fetching current song playing', 400
 # ranking --------------------------------------------------------------------------------------------------------------
-@app.route('/most-streamed-songs')
-def ranking():
-    data = spotifyCharts.get_top_songs()
-    return render_template('most-streamed-songs.html', data=data)
 
 
