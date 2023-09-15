@@ -6,3 +6,4 @@ app.config.from_object(Config)
 app.secret_key = 'your_secret_key'
 
 from app import routes
+from app import most_streamed_spotify
