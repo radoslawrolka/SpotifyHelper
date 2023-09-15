@@ -15,13 +15,13 @@ def get_top_songs():
     top_songs = []
     for i in range(0, len(td_elements), 6):
         pos = td_elements[i].get_text(strip=True)
+        imgLink = td_elements[i+1].find('img')['src']
         titleAuthor = td_elements[i + 2].get_text("|", strip=True).split('|')
         strems = td_elements[i + 3].get_text(strip=True)
         year = td_elements[i + 5].get_text(strip=True)
-        top_songs.append((pos, titleAuthor[0], titleAuthor[1], strems, year))
+        top_songs.append((pos, imgLink, titleAuthor[0], titleAuthor[1], strems, year))
 
     return top_songs
-
 
 # Get most streamed artists --------------------------------------------------------------------------------------------
 def get_top_artists():
