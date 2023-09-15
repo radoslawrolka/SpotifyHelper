@@ -36,12 +36,14 @@ def get_top_artists():
     top_artists = []
     for i in range(0, len(td_elements), 16):
         pos = td_elements[i+1].get_text(strip=True)
+        imgLink = td_elements[i + 2].find('img')['src']
         artist = td_elements[i + 3].get_text(strip=True)
-        streams = td_elements[i + 11].get_text(strip=True)
-        top_artists.append((pos, artist, streams))
+        streams = td_elements[i + 5].get_text(strip=True)
+        top_artists.append((pos, imgLink, artist, streams))
 
     return top_artists
 
+print(*get_top_artists(), sep='\n')
 
 # Get most streamed albums ---------------------------------------------------------------------------------------------
 def get_top_albums():
@@ -54,10 +56,11 @@ def get_top_albums():
     td_elements = soup.find_all('td', {'style': ''})
 
     top_albums = []
-    for i in range(0, len(td_elements), 10):
+    for i in range(0, len(td_elements), 12):
         pos = td_elements[i + 1].get_text(strip=True)
-        albumArtist = td_elements[i + 3].get_text('|', strip=True).split('|')
-        streams = td_elements[i + 5].get_text(strip=True)
-        top_albums.append((pos, albumArtist[0], albumArtist[1], streams))
+        imgLink = td_elements[i + 2].find('img')['src']
+        albumArtist = td_elements[i + 5].get_text('|', strip=True).split('|')
+        streams = td_elements[i + 6].get_text(strip=True)
+        top_albums.append((pos, imgLink, albumArtist[0], albumArtist[1], streams))
 
     return top_albums
