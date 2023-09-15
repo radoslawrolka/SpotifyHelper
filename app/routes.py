@@ -1,19 +1,9 @@
-from flask import Flask, request, redirect, url_for, session
+from app import app
+from flask import render_template, request, redirect, url_for, session
 import requests
 import base64
 import json
-
-app = Flask(__name__)
-
-# Configure your Spotify API credentials
-CLIENT_ID = 'e4731229236d48009287534c3fea2cc9'
-CLIENT_SECRET = '84cba764e53c4cfd9af3020259112fe0'
-REDIRECT_URI = 'http://localhost:5000/callback'  # Make sure this matches your Spotify Developer Application settings
-AUTH_URL = 'https://accounts.spotify.com/authorize'
-TOKEN_URL = 'https://accounts.spotify.com/api/token'
-SCOPE = 'user-top-read user-read-recently-played user-read-currently-playing user-read-playback-state user-modify-playback-state'
-
-app.secret_key = 'your_secret_key'  # Replace with a strong secret key for session management
+from app import spotifyCharts
 
 @app.route('/')
 def index():
@@ -25,10 +15,10 @@ def login():
     state = 'some_random_state_value'
 
     # Create the authorization URL with required parameters
-    auth_url = f'{AUTH_URL}?response_type=code' \
-               f'&client_id={CLIENT_ID}' \
-               f'&redirect_uri={REDIRECT_URI}' \
-               f'&scope={SCOPE}' \
+    auth_url = f'{app.config["AUTH_URL"]}?response_type=code' \
+               f'&client_id={app.config["CLIENT_ID"]}' \
+               f'&redirect_uri={app.config["REDIRECT_URI"]}' \
+               f'&scope={app.config["SCOPE"]}' \
                f'&state={state}'
 
     return redirect(auth_url)
@@ -43,13 +33,13 @@ def callback():
     code = request.args.get('code')
     token_data = {
         'code': code,
-        'redirect_uri': REDIRECT_URI,
+        'redirect_uri': app.config["REDIRECT_URI"],
         'grant_type': 'authorization_code',
     }
     headers = {
-        'Authorization': 'Basic ' + base64.b64encode(f'{CLIENT_ID}:{CLIENT_SECRET}'.encode()).decode(),
+        'Authorization': 'Basic ' + base64.b64encode(f'{app.config["CLIENT_ID"]}:{app.config["CLIENT_SECRET"]}'.encode()).decode(),
     }
-    response = requests.post(TOKEN_URL, data=token_data, headers=headers)
+    response = requests.post(app.config["TOKEN_URL"], data=token_data, headers=headers)
 
     if response.status_code == 200:
         token_info = json.loads(response.text)
@@ -62,7 +52,8 @@ def callback():
 def home():
     return 'Welcome to the Spotify Top Data App!</br> ' \
            '<a href="/get_top_data">get top user data</a></br>' \
-           '<a href="/current_play">get current play</a></br>'
+           '<a href="/current_play">get current play</a></br>' \
+           '<a href="/most-streamed-songs">most streamed songs</a>'
 
 @app.route('/get_top_data')
 def get_top_data():
@@ -96,6 +87,10 @@ def current_play():
         return current['item']['name'] + ' by ' + current['item']['artists'][0]['name'] + ' from ' + current['item']['album']['name']
     else:
         return response.text+'Error fetching current song playing', 400
+# ranking --------------------------------------------------------------------------------------------------------------
+@app.route('/most-streamed-songs')
+def ranking():
+    data = spotifyCharts.get_top_songs()
+    return render_template('most-streamed-songs.html', data=data)
 
-if __name__ == '__main__':
-    app.run(debug=False)
+
