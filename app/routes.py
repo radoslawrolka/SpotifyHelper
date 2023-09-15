@@ -1,9 +1,8 @@
 from app import app
 from flask import render_template, request, redirect, url_for, session
 import requests
-import base64
 import json
-from app import spotifyCharts
+from app import spotifyAPI
 
 @app.route('/')
 def index():
@@ -11,51 +10,22 @@ def index():
 
 @app.route('/login')
 def login():
-    # Generate a random state value to prevent cross-site request forgery (CSRF) attacks
-    state = 'some_random_state_value'
-
-    # Create the authorization URL with required parameters
-    auth_url = f'{app.config["AUTH_URL"]}?response_type=code' \
-               f'&client_id={app.config["CLIENT_ID"]}' \
-               f'&redirect_uri={app.config["REDIRECT_URI"]}' \
-               f'&scope={app.config["SCOPE"]}' \
-               f'&state={state}'
-
-    return redirect(auth_url)
+    return redirect(spotifyAPI.get_auth_url())
 
 @app.route('/callback')
 def callback():
-    # Check the state parameter to protect against CSRF attacks
-    if request.args.get('state') != 'some_random_state_value':
+    if not spotifyAPI.validate_state():
         return 'Invalid state parameter', 400
 
-    # Exchange the authorization code for an access token
-    code = request.args.get('code')
-    token_data = {
-        'code': code,
-        'redirect_uri': app.config["REDIRECT_URI"],
-        'grant_type': 'authorization_code',
-    }
-    headers = {
-        'Authorization': 'Basic ' + base64.b64encode(f'{app.config["CLIENT_ID"]}:{app.config["CLIENT_SECRET"]}'.encode()).decode(),
-    }
-    response = requests.post(app.config["TOKEN_URL"], data=token_data, headers=headers)
-
-    if response.status_code == 200:
-        token_info = json.loads(response.text)
-        session['access_token'] = token_info['access_token']
+    token = spotifyAPI.create_token()
+    if token:
         return redirect(url_for('home'))
     else:
         return 'Error retrieving access token', 400
 
 @app.route('/home')
 def home():
-    return 'Welcome to the Spotify Top Data App!</br> ' \
-           '<a href="/get_top_data">get top user data</a></br>' \
-           '<a href="/current_play">get current play</a></br>' \
-           '<a href="/most-streamed-songs">most streamed songs</a></br>' \
-           '<a href="/most-streamed-artists">most streamed artists</a></br>' \
-           '<a href="/most-streamed-albums">most streamed albums</a>'
+    return render_template('home.html')
 
 @app.route('/get_top_data')
 def get_top_data():
@@ -89,6 +59,16 @@ def current_play():
         return current['item']['name'] + ' by ' + current['item']['artists'][0]['name'] + ' from ' + current['item']['album']['name']
     else:
         return response.text+'Error fetching current song playing', 400
-# ranking --------------------------------------------------------------------------------------------------------------
 
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        type = request.form['type']
+        name = request.form['name']
+        return redirect(url_for('result', type=type, name=name))
+    return render_template('search.html')
+
+@app.route('/result/<type>/<name>')
+def result(type, name):
+    return spotifyAPI.search(type, name)
 
