@@ -1,6 +1,5 @@
-from app import app
+from app import app, spotifyCharts
 from flask import render_template
-from app import spotifyCharts
 
 @app.route('/most-streamed-songs')
 def most_streamed_songs():

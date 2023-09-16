@@ -1,8 +1,7 @@
-from app import app
-from flask import render_template, request, redirect, url_for, session
+from app import app, spotifyAPI
+from flask import render_template, request, redirect, url_for
 import requests
 import json
-from app import spotifyAPI
 
 @app.route('/')
 def index():
@@ -16,7 +15,6 @@ def login():
 def callback():
     if not spotifyAPI.validate_state():
         return 'Invalid state parameter', 400
-
     token = spotifyAPI.create_token()
     if token:
         return redirect(url_for('home'))
@@ -29,7 +27,7 @@ def home():
 
 @app.route('/get_top_data')
 def get_top_data():
-    access_token = session.get('access_token')
+    access_token = spotifyAPI.get_token()
     if not access_token:
         return 'Access token not found in session'
 
@@ -44,22 +42,6 @@ def get_top_data():
     else:
         return 'Error fetching top artists data', 400
 
-@app.route('/current_play')
-def current_play():
-    access_token = session.get('access_token')
-    if not access_token:
-        return 'Access token not found in session'
-
-    # Make a request to the Spotify API to get the user's top data
-    headers = {'Authorization': f'Bearer {access_token}'}
-    response = requests.get('https://api.spotify.com/v1/me/player/currently-playing', headers=headers)
-    if response.status_code == 200:
-        current = json.loads(response.text)
-        # Process and display the user's top artists data here
-        return current['item']['name'] + ' by ' + current['item']['artists'][0]['name'] + ' from ' + current['item']['album']['name']
-    else:
-        return response.text+'Error fetching current song playing', 400
-
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
@@ -71,4 +53,3 @@ def search():
 @app.route('/result/<type>/<name>')
 def result(type, name):
     return spotifyAPI.search(type, name)
-

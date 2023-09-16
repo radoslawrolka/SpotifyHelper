@@ -83,8 +83,8 @@ def get_token():
 def get_auth_header():
     return {"Authorization": "Bearer " + get_token()}
 
-# Spotify API search -----------------------------------------------------------------------------------------------
-def search(type, name): # type = [artist/album/track]
+# Spotify API search ---------------------------------------------------------------------------------------------------
+def search(type, name):
     url = "https://api.spotify.com/v1/search"
     headers = get_auth_header()
     query = f"q={name}&type={type}&limit=1"
