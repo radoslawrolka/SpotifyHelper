@@ -14,12 +14,15 @@ def get_top_songs():
 
     top_songs = []
     for i in range(0, len(td_elements), 6):
-        pos = td_elements[i].get_text(strip=True)
-        imgLink = td_elements[i+1].find('img')['src']
         titleAuthor = td_elements[i + 2].get_text("|", strip=True).split('|')
-        strems = td_elements[i + 3].get_text(strip=True)
-        year = td_elements[i + 5].get_text(strip=True)
-        top_songs.append((pos, imgLink, titleAuthor[0], titleAuthor[1], strems, year))
+        top_songs.append({
+            'position': td_elements[i].get_text(strip=True),
+            'image': td_elements[i + 1].find('img')['src'],
+            'title': titleAuthor[0],
+            'artist': titleAuthor[1],
+            'streams': td_elements[i + 3].get_text(strip=True),
+            'year': td_elements[i + 5].get_text(strip=True)
+        })
 
     return top_songs
 
@@ -35,11 +38,12 @@ def get_top_artists():
 
     top_artists = []
     for i in range(0, len(td_elements), 16):
-        pos = td_elements[i+1].get_text(strip=True)
-        imgLink = td_elements[i + 2].find('img')['src']
-        artist = td_elements[i + 3].get_text(strip=True)
-        streams = td_elements[i + 5].get_text(strip=True)
-        top_artists.append((pos, imgLink, artist, streams))
+        top_artists.append({
+            'position': td_elements[i + 1].get_text(strip=True),
+            'image': td_elements[i + 2].find('img')['src'],
+            'artist': td_elements[i + 3].get_text(strip=True),
+            'streams': td_elements[i + 5].get_text(strip=True)
+        })
 
     return top_artists
 
@@ -55,10 +59,13 @@ def get_top_albums():
 
     top_albums = []
     for i in range(0, len(td_elements), 12):
-        pos = td_elements[i + 1].get_text(strip=True)
-        imgLink = td_elements[i + 2].find('img')['src']
         albumArtist = td_elements[i + 5].get_text('|', strip=True).split('|')
-        streams = td_elements[i + 6].get_text(strip=True)
-        top_albums.append((pos, imgLink, albumArtist[0], albumArtist[1], streams))
+        top_albums.append({
+            'position': td_elements[i + 1].get_text(strip=True),
+            'image': td_elements[i + 2].find('img')['src'],
+            'album': albumArtist[0],
+            'artist': albumArtist[1],
+            'streams': td_elements[i + 6].get_text(strip=True)
+        })
 
     return top_albums
