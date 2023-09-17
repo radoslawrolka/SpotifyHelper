@@ -88,40 +88,47 @@ def get_auth_header():
 def artist_data(json):
     result = []
     for element in json:
-        spotify_url = element['external_urls']['spotify']
-        print (element['images'])
         if len(element['images']) == 0:
             image = "https://drive.google.com/file/d/1Dqt02sjPjE_CbOrD888Q5zu1DhmI-j2r"
         else:
             image = element['images'][0]['url']
-        followers = element['followers']['total']
-        genres = ", ".join(element['genres'])
-        artist_name = element['name']
-        result.append([len(result)+1, spotify_url, image, followers, genres, artist_name])
+        result.append({
+            "position": len(result)+1,
+            "spotify_url": element['external_urls']['spotify'],
+            "image": image,
+            "followers": element['followers']['total'],
+            "genres": ", ".join(element['genres']),
+            "artist_name": element['name']
+        })
     return result
 
 def album_data(json):
     result = []
     for element in json:
-        artist_name = element['artists'][0]['name']
-        spotify_url = element['external_urls']['spotify']
         if len(element['images']) == 0:
             image = "https://drive.google.com/file/d/1Dqt02sjPjE_CbOrD888Q5zu1DhmI-j2r"
         else:
             image = element['images'][0]['url']
-        album_name = element['name']
-        result.append([len(result)+1, artist_name, spotify_url, image, album_name])
+        result.append({
+            "position": len(result)+1,
+            "artist_name": element['artists'][0]['name'],
+            "spotify_url": element['external_urls']['spotify'],
+            "image": image,
+            "album_name": element['name']
+        })
     return result
 
 def track_data(json):
     result = []
     for element in json:
-        album_name = element['album']['name']
-        artist_name = element['artists'][0]['name']
-        duration_ms = element['duration_ms']
-        spotify_url = element['external_urls']['spotify']
-        track_name = element['name']
-        result.append([len(result)+1, artist_name, duration_ms, spotify_url, track_name])
+        result.append({
+            "position": len(result)+1,
+            "album_name": element['album']['name'],
+            "artist_name": element['artists'][0]['name'],
+            "duration_ms": element['duration_ms'],
+            "spotify_url": element['external_urls']['spotify'],
+            "track_name": element['name']
+        })
     return result
 
 def search(item, name, limit=5):

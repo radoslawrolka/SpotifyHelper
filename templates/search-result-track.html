@@ -38,9 +38,9 @@
                 <tbody>
                     {% for item in result %}
                         <tr>
-                            <td>{{ item[0] }}</td>
-                            <td><a href="/track/{{ item[4] }}">{{ item[4] }}</a></td>
-                            <td><a href="/artist/{{ item[1] }}">{{ item[1] }}</a></td>
+                            <td>{{ item['position'] }}</td>
+                            <td><a href="/album/{{ item['track_name'] }}">{{ item['track_name'] }}</a></td>
+                            <td><a href="/artist/{{ item['artist_name'] }}">{{ item['artist_name'] }}</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

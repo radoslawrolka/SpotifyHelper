@@ -14,7 +14,7 @@ def get_top_data():
 @app.route('/<item>/<name>')
 def show_item(item, name):
     result_data = spotifyAPI.search(item, name, 1)
-    return result_data#render_template('show.html', result=result_data, item=item, name=name)
+    return render_template('show.html', result=result_data, item=item, name=name)
 
 
 @app.route('/search', methods=['GET', 'POST'])
