@@ -83,15 +83,83 @@ def get_token():
 def get_auth_header():
     return {"Authorization": "Bearer " + get_token()}
 
+
 # Spotify API search ---------------------------------------------------------------------------------------------------
-def search(type, name):
+def artist_data(json):
+    result = []
+    for element in json:
+        spotify_url = element['external_urls']['spotify']
+        print (element['images'])
+        if len(element['images']) == 0:
+            image = "https://drive.google.com/file/d/1Dqt02sjPjE_CbOrD888Q5zu1DhmI-j2r"
+        else:
+            image = element['images'][0]['url']
+        followers = element['followers']['total']
+        genres = ", ".join(element['genres'])
+        artist_name = element['name']
+        result.append([len(result)+1, spotify_url, image, followers, genres, artist_name])
+    return result
+
+def album_data(json):
+    result = []
+    for element in json:
+        artist_name = element['artists'][0]['name']
+        spotify_url = element['external_urls']['spotify']
+        if len(element['images']) == 0:
+            image = "https://drive.google.com/file/d/1Dqt02sjPjE_CbOrD888Q5zu1DhmI-j2r"
+        else:
+            image = element['images'][0]['url']
+        album_name = element['name']
+        result.append([len(result)+1, artist_name, spotify_url, image, album_name])
+    return result
+
+def track_data(json):
+    result = []
+    for element in json:
+        album_name = element['album']['name']
+        artist_name = element['artists'][0]['name']
+        duration_ms = element['duration_ms']
+        spotify_url = element['external_urls']['spotify']
+        track_name = element['name']
+        result.append([len(result)+1, artist_name, duration_ms, spotify_url, track_name])
+    return result
+
+def search(item, name, limit=5):
     url = "https://api.spotify.com/v1/search"
     headers = get_auth_header()
-    query = f"q={name}&type={type}&limit=1"
+    query = f"q={name}&type={item}&limit={limit}"
 
     query_url = url + "?" + query
     result = requests.get(query_url, headers=headers)
-    json_result = json.loads(result.content)[type+"s"]["items"]
+    json_result = json.loads(result.content)[item+"s"]["items"]
     if len(json_result) == 0:
         return None
-    return json_result[0]
+    match item:
+        case "artist":
+            return artist_data(json_result)
+        case "album":
+            return album_data(json_result)
+        case "track":
+            return track_data(json_result)
+
+# Spotify API get top data ---------------------------------------------------------------------------------------------
+def get_top_data():
+    url = "https://api.spotify.com/v1/me/top/tracks"
+    headers = get_auth_header()
+    result = requests.get(url, headers=headers)
+    json_result = json.loads(result.content)["items"]
+    return json_result
+
+# Spotify API get recommendations --------------------------------------------------------------------------------------
+def get_recommendations(data):
+    url = "https://api.spotify.com/v1/recommendations"
+    headers = get_auth_header()
+    query = ""
+    return "hehe popek"
+
+"""
+@app.route('/most-streamed-artists')
+def most_streamed_artists():
+    data = spotifyCharts.get_top_artists()
+    return render_template('most-streamed-artists.html', data=data)
+"""

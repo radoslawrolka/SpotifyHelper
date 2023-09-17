@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='container.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
+    <title>SpotifyHelper</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Search on Spotify</h1>
+        <form class="search-form" action="/search" method="POST">
+            <label for="searchItem">Choose what to search:</label>
+            <select id="searchItem" name="item">
+                <option value="track">Track</option>
+                <option value="artist">Artist</option>
+                <option value="album">Album</option>
+            </select>
+            <label for="searchName">Enter the name to search:</label>
+            <input type="text" id="searchName" name="name" required>
+            <button class="button" type="submit">Search</button>
+        </form>
+    </div>
+    {% if result %}
+            <h1 style="color: white;">Search result for {{ item }}: {{ name }}</h1>
+                <table>
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>{{ item }} Name</th>
+                        <th>Author</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in result %}
+                        <tr>
+                            <td>{{ item[0] }}</td>
+                            <td><a href="/album/{{ item[4] }}">{{ item[4] }}</a></td>
+                            <td><a href="/artist/{{ item[1] }}">{{ item[1] }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No result found.</p>
+        {% endif %}
+    <a href="/home"><img src="https://drive.google.com/uc?id=1840-ofHIgLGI9x0Bpsf5XYgOxZwNtko2" alt="Home" width="100" height="100"></a>
+</body>
+</html>
+
+
