@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SpotifyHelper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='container.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
+</head>
+<body>
+    <a href="/home"><img src="https://drive.google.com/uc?id=1840-ofHIgLGI9x0Bpsf5XYgOxZwNtko2" alt="Home" width="100" height="100"></a>
+    <br><br>
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                <h2>Image</h2>
+                <p>Click on the image to see the song on Spotify:</p>
+                <a href="{{ result[0]['spotify_url'] }}"><img src="{{ result[0]['image'] }}" alt="Image" width="300" height="300"></a>
+            </div>
+            <div class="column">
+                <h2>Details {{ item }}: {{ name }}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, value in result[0].items() if key != 'image' %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

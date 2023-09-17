@@ -1,11 +1,18 @@
 .container {
-    max-width: 800px;
+    max-width: 70%;
+    width: auto;
     margin: 0 auto;
-    padding: 10px;
+    padding: 20px;
     background-color: #616161;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     text-align: center;
+}
+
+
+.image-container {
+            flex: 1;
+            text-align: center;
 }
 
 .columns {
@@ -14,9 +21,13 @@
 }
 
 .column {
-    width: 27%;
+    width: auto;
     padding: 20px;
     text-align: center;
     background-color: #A9A9A9;
     border-radius: 10px;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column; /* Display children vertically */
+    margin: 10px;
 }

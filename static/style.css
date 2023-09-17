@@ -18,6 +18,8 @@ h1 {
 img {
     display: block;
     margin: 0 auto;
+    height: auto;
+    max-width: 100%;
 }
 
 ul {
