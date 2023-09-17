@@ -32,15 +32,21 @@
                     <tr>
                         <th>Position</th>
                         <th>{{ item }} Name</th>
+                        {% if item == 'track' or item == 'album' %}
                         <th>Author</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in result %}
+                    {% for record in result %}
                         <tr>
-                            <td>{{ item['position'] }}</td>
-                            <td><a href="/album/{{ item['track_name'] }}">{{ item['track_name'] }}</a></td>
-                            <td><a href="/artist/{{ item['artist_name'] }}">{{ item['artist_name'] }}</a></td>
+                            <td>{{ record['position'] }}</td>
+                            {% if item == 'track' %}
+                            <td><a href="/album/{{ record['track_name'] }}">{{ record['track_name'] }}</a></td>
+                            {% elif item == 'album' %}
+                            <td><a href="/album/{{ record['album_name'] }}">{{ record['album_name'] }}</a></td>
+                            {% endif %}
+                            <td><a href="/artist/{{ record['artist_name'] }}">{{ record['artist_name'] }}</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

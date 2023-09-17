@@ -32,8 +32,7 @@
                 <td><img src="{{ record['image'] }}" alt="image" width="50" height="50"></td>
                 {% if item == 'albums'%}
                 <td><a href="/album/{{ record['album'] }}">{{ record['album'] }}</a></td>
-                {% endif %}
-                {% if item == 'tracks'%}
+                {% elif item == 'tracks'%}
                 <td><a href="/track/{{ record['title'] }}">{{ record['title'] }}</a></td>
                 {% endif %}
                 <td><a href="/artist/{{ record['artist'] }}">{{ record['artist'] }}</a></td>

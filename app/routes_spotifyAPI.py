@@ -32,7 +32,7 @@ def search():
 @app.route('/search/result/<item>/<name>', methods=['GET'])
 def search_result(item, name):
     result_data = spotifyAPI.search(item, name)
-    return render_template(f'search-result-{item}.html', result=result_data, item=item, name=name)
+    return render_template(f'search-result.html', result=result_data, item=item, name=name)
 
 
 """
