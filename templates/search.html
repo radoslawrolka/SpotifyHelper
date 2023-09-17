@@ -3,61 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='container.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
     <title>Search on Spotify</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #494949;
-            color: #fff;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #333;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            margin-top: 0;
-        }
-
-        label {
-            display: block;
-            margin-top: 10px;
-            font-size: 18px;
-        }
-
-        select, input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        input#searchName {
-            width: calc(100% - 20px); /* Adjusted width, subtract 20px for padding */
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #1DB954;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <h1>Search on Spotify</h1>
-        <form action="/search" method="POST">
+        <form class="search-form" action="/search" method="POST">
             <label for="searchItem">Choose what to search:</label>
             <select id="searchItem" name="item">
                 <option value="track">Track</option>
@@ -66,7 +21,7 @@
             </select>
             <label for="searchName">Enter the name to search:</label>
             <input type="text" id="searchName" name="name" required>
-            <button type="submit">Search</button>
+            <button class="button" type="submit">Search</button>
         </form>
     </div>
 </body>

@@ -1,0 +1,30 @@
+table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #1DB954; /* Spotify green */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for table header */
+table th {
+    padding: 10px;
+    text-align: center;
+    background-color: #1DB954; /* Spotify green */
+    color: #fff; /* White font color */
+    border-bottom: 1px solid #ddd;
+}
+
+/* Style for table data cells */
+table td {
+    padding: 10px;
+    text-align: center;
+    background-color: #fff; /* White background */
+    color: #000; /* Black font color */
+    border-bottom: 1px solid #ddd;
+}
+
+/* Style for even rows */
+table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Light gray for even rows */
+}

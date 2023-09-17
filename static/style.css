@@ -3,6 +3,11 @@ body {
     margin: 0;
     padding: 0;
     background-color: #333;
+    color: #fff;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    text-align: center;
 }
 
 h1 {
@@ -10,25 +15,25 @@ h1 {
     padding: 20px;
 }
 
-table {
-    width: 80%;
+img {
+    display: block;
     margin: 0 auto;
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-table th, table td {
-    padding: 10px;
+ul {
+    list-style-type: none;
+    padding: 0;
     text-align: center;
-    border-bottom: 1px solid #ddd;
 }
 
-table th {
-    background-color: #1DB954;
-    color: #f2f2f2;
+p {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
 }
 
-table tr:nth-child(even) {
-    background-color: #bcc5d1;
+.button-container {
+    margin-top: 200px;
+    margin: 20px auto;
+    text-align: center;
 }

@@ -3,39 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
     <title>SpotifyHelper</title>
-    <style>
-        body {
-            background-color: #333;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            color: white;
-        }
-        .description {
-            margin-top: 50px;
-            line-height: 1.5;
-        }
-        .button-container {
-            margin-top: 20px;
-        }
-        .continue-button {
-            padding: 10px 20px;
-            background-color: #1DB954;/
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        ul {
-            list-style-type: none;
-        }
-    </style>
 </head>
 <body>
     <div class="description">
@@ -48,9 +18,11 @@
             <li>Receive personalized music recommendations.</li>
         </ul>
     </div>
-    <div class="button-container">
-        <a class="continue-button" href="/login">Continue</a>
-    </div>
-    <img src="https://drive.google.com/uc?id=1qe5FgG2m3e4qYAhMRHGTebILzn4pdAR-" alt="Spotify logo" width="400" height="400">
+    <br>
+    <a class="button" href="/login">Continue</a>
+    <br>
+    <br>
+    <br>
+    <img src="https://drive.google.com/uc?id=1qe5FgG2m3e4qYAhMRHGTebILzn4pdAR-" alt="Spotify logo" width="300" height="300">
 </body>
 </html>
