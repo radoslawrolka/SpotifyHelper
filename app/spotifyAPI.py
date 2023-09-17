@@ -121,13 +121,18 @@ def album_data(json):
 def track_data(json):
     result = []
     for element in json:
+        if len(element['album']['images']) == 0:
+            image = "https://drive.google.com/file/d/1Dqt02sjPjE_CbOrD888Q5zu1DhmI-j2r"
+        else:
+            image = element['album']['images'][0]['url']
         result.append({
             "position": len(result)+1,
             "album_name": element['album']['name'],
             "artist_name": element['artists'][0]['name'],
             "duration_ms": element['duration_ms'],
             "spotify_url": element['external_urls']['spotify'],
-            "track_name": element['name']
+            "track_name": element['name'],
+            "image": image
         })
     return result
 
@@ -150,12 +155,18 @@ def search(item, name, limit=5):
             return track_data(json_result)
 
 # Spotify API get top data ---------------------------------------------------------------------------------------------
-def get_top_data():
-    url = "https://api.spotify.com/v1/me/top/tracks"
+def get_top_data(item):
+    url = f"https://api.spotify.com/v1/me/top/{item}"
     headers = get_auth_header()
     result = requests.get(url, headers=headers)
     json_result = json.loads(result.content)["items"]
-    return json_result
+    if len(json_result) == 0:
+        return None
+    match item:
+        case "artists":
+            return artist_data(json_result)
+        case "tracks":
+            return track_data(json_result)
 
 # Spotify API get recommendations --------------------------------------------------------------------------------------
 def get_recommendations(data):

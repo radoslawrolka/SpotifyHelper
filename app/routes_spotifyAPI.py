@@ -2,13 +2,16 @@ from app import app, spotifyAPI
 from flask import render_template, request, redirect
 
 
-@app.route('/get_top_data')
-def get_top_data():
-    user_top_data = spotifyAPI.get_top_data()
-    if user_top_data:
-        return render_template('top-data.html', data=user_top_data)
-    else:
-        return 'Error fetching top artists data', 400
+@app.route('/your-top-artists')
+def get_top_artists():
+    user_top_data = spotifyAPI.get_top_data("artists")
+    return render_template('your-top.html', data=user_top_data, item="artists")
+
+
+@app.route('/your-top-tracks')
+def get_top_tracks():
+    user_top_data = spotifyAPI.get_top_data("tracks")
+    return render_template('your-top.html', data=user_top_data, item="tracks")
 
 
 @app.route('/<item>/<name>')
@@ -29,10 +32,10 @@ def search():
 @app.route('/search/result/<item>/<name>', methods=['GET'])
 def search_result(item, name):
     result_data = spotifyAPI.search(item, name)
-    print(*result_data, sep='\n')
     return render_template(f'search-result-{item}.html', result=result_data, item=item, name=name)
 
 
+"""
 @app.route('/recommend', methods=['GET', 'POST'])
 def recommend():
     if request.method == 'POST':
@@ -49,3 +52,4 @@ def recommendations(data):
     result_data = spotifyAPI.get_recommendations(data)
     return render_template('recommend-result.html', result=result_data, data=data)
 
+"""
