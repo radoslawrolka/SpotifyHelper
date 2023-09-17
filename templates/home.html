@@ -1,15 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify Top Data App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #616161;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .columns {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .column {
+            width: 27%;
+            padding: 20px;
+            text-align: center;
+            background-color: #A9A9A9;
+            border-radius: 10px;
+        }
+
+        .button {
+            display: block;
+            padding: 10px 20px;
+            background-color: #1DB954;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px auto;
+        }
+    </style>
 </head>
 <body>
-    <p>Welcome to the Spotify Top Data App!</p>
-    <a href="/get_top_data">get top user data</a><br>
-    <a href="/current_play">get current play</a><br>
-    <a href="/most-streamed-songs">most streamed songs</a><br>
-    <a href="/most-streamed-artists">most streamed artists</a><br>
-    <a href="/most-streamed-albums">most streamed albums</a><br>
-    <a href="/search">search</a><br>
+    <div class="container">
+        <h1>Welcome to the Spotify Top Data App!</h1>
+        <p>Explore the features of our app:</p>
+
+        <div class="columns">
+            <div class="column">
+                <h2>Ranking</h2>
+                <p>Discover the top-ranked songs and artists:</p>
+                <a href="/most-streamed-songs" class="button">Most Streamed Songs</a>
+                <a href="/most-streamed-artists" class="button">Most Streamed Artists</a>
+                <a href="/most-streamed-albums" class="button">Most Streamed Albums</a>
+            </div>
+            <div class="column">
+                <h2>Spotify Utilities</h2>
+                <p>Enhance your Spotify experience:</p>
+                <a href="/search" class="button">Search</a>
+            </div>
+            <div class="column">
+                <h2>For You</h2>
+                <p>Your music history and tailored recommendations:</p>
+                <a href="/get_top_data" class="button">Your history</a>
+                <a href="/recommend" class="button">Recommendations</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

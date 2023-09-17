@@ -3,14 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>SpotifyHelper</title>
+    <style>
+        body {
+            background-color: #333;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: white;
+        }
+        .description {
+            margin-top: 50px;
+            line-height: 1.5;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .continue-button {
+            padding: 10px 20px;
+            background-color: #1DB954;/
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h2>HOME</h2>
-        <a href="login" class="button">Login</a>
-        </form>
+    <div class="description">
+        <h1>Welcome to SpotifyHelper</h1>
+        <p>Discover the power of SpotifyHelper! With this app, you can:</p>
+        <ul>
+            <li>Get the most streamed albums, artists, and tracks of all time on Spotify.</li>
+            <li>Search for songs and explore Spotify's vast music library.</li>
+            <li>View your personal most streamed albums, artists, and tracks.</li>
+            <li>Receive personalized music recommendations.</li>
+        </ul>
     </div>
+    <div class="button-container">
+        <a class="continue-button" href="/login">Continue</a>
+    </div>
+    <img src="https://drive.google.com/uc?id=1qe5FgG2m3e4qYAhMRHGTebILzn4pdAR-" alt="Spotify logo" width="400" height="400">
 </body>
 </html>
