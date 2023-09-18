@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='container.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
+    <title>SpotifyHelper</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Genre Selection</h1>
+        <form action="/recommend" method="POST">
+            <div class="columns">
+                <div class="column">
+                    <label>Select Genres:</label>
+                    <select multiple id="mySelectInput" class="form-control">
+                        {% for genre in genres %}
+                        <option value="{{ genre }}">{{ genre }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <button type="button" id="get-recommendations-button" class="button">Get Recommendations</button>
+                </div>
+            </div>
+            <button class="button" type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <a href="/home"><img src="https://drive.google.com/uc?id=1840-ofHIgLGI9x0Bpsf5XYgOxZwNtko2" alt="Home" width="100" height="100"></a>
+</body>
+</html>

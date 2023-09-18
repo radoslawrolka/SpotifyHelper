@@ -1,5 +1,5 @@
 from app import app, spotifyAPI
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, jsonify
 
 
 @app.route('/your-top-artists')
@@ -35,21 +35,18 @@ def search_result(item, name):
     return render_template(f'search-result.html', result=result_data, item=item, name=name)
 
 
-"""
 @app.route('/recommend', methods=['GET', 'POST'])
 def recommend():
     if request.method == 'POST':
-        input_text = request.args.get('input')
-        #data = request.form['data']
-        print(input_text)
-        return
-        return redirect(f'/recommend/result/{data}')
-    return render_template('recommend.html')
+        selected = ",".join(request.json.get('selected_genres'))
+        return jsonify(selected)
+    else:
+        genres = spotifyAPI.get_genre_seeds()
+        return render_template('recommend.html', genres=genres)
 
 
-@app.route('/recommend/result/<data>', methods=['GET'])
-def recommendations(data):
-    result_data = spotifyAPI.get_recommendations(data)
-    return render_template('recommend-result.html', result=result_data, data=data)
-
-"""
+@app.route('/recommend/result/<genres>', methods=['GET', 'POST'])
+def recommend_result(genres):
+    result = spotifyAPI.get_recommendations(genres)
+    gen = spotifyAPI.get_genre_seeds()
+    return render_template('recommend-result.html', genres=gen, result=result)

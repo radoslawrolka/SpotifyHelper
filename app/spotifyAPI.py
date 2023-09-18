@@ -85,9 +85,9 @@ def get_auth_header():
 
 
 # Spotify API search ---------------------------------------------------------------------------------------------------
-def artist_data(json):
+def artist_data(jsonf):
     result = []
-    for element in json:
+    for element in jsonf:
         if len(element['images']) == 0:
             image = "https://drive.google.com/file/d/1Dqt02sjPjE_CbOrD888Q5zu1DhmI-j2r"
         else:
@@ -102,9 +102,9 @@ def artist_data(json):
         })
     return result
 
-def album_data(json):
+def album_data(jsonf):
     result = []
-    for element in json:
+    for element in jsonf:
         if len(element['images']) == 0:
             image = "https://drive.google.com/file/d/1Dqt02sjPjE_CbOrD888Q5zu1DhmI-j2r"
         else:
@@ -118,9 +118,9 @@ def album_data(json):
         })
     return result
 
-def track_data(json):
+def track_data(jsonf):
     result = []
-    for element in json:
+    for element in jsonf:
         if len(element['album']['images']) == 0:
             image = "https://drive.google.com/file/d/1Dqt02sjPjE_CbOrD888Q5zu1DhmI-j2r"
         else:
@@ -169,15 +169,19 @@ def get_top_data(item):
             return track_data(json_result)
 
 # Spotify API get recommendations --------------------------------------------------------------------------------------
+def get_genre_seeds():
+    url = "https://api.spotify.com/v1/recommendations/available-genre-seeds"
+    headers = get_auth_header()
+    result = requests.get(url, headers=headers)
+    json_result = json.loads(result.content)["genres"]
+    return json_result
+
 def get_recommendations(data):
     url = "https://api.spotify.com/v1/recommendations"
     headers = get_auth_header()
-    query = ""
-    return "hehe popek"
+    query = f"limit=5&seed_genres={data}"
 
-"""
-@app.route('/most-streamed-artists')
-def most_streamed_artists():
-    data = spotifyCharts.get_top_artists()
-    return render_template('most-streamed-artists.html', data=data)
-"""
+    query_url = url + "?" + query
+    result = requests.get(query_url, headers=headers)
+    json_result = json.loads(result.content)["tracks"]
+    return track_data(json_result)
