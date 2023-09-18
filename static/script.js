@@ -34,16 +34,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Find the form element
     const genreForm = document.querySelector('form');
+    const artistInput = document.getElementById('searchName');
+    const trackInput = document.getElementById('searchTrack');
 
     genreForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         // Get the selected genres from the select element
         const selectedGenres = Array.from(genresSelect.selectedOptions).map(option => option.value);
+        const artistName = artistInput.value;
+        const trackName = trackInput.value;
 
         // Create an object to send as JSON
         const formData = {
-            selected_genres: selectedGenres
+            selected_genres: selectedGenres,
+            artist_name: artistName,
+            track_name: trackName
         };
 
         // Send the data to Flask using fetch
@@ -59,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 // Handle success, e.g., redirect to a new page
                 const jsonResponse = await response.json();
-                window.location.href = '/recommend/result/' + jsonResponse; // Change to the desired URL
+                window.location.href = '/recommend/result/' + jsonResponse.genre + '/' + jsonResponse.artist + '/' + jsonResponse.track // Change to the desired URL
             } else {
                 console.error('Error:', response.status, response.statusText);
             }

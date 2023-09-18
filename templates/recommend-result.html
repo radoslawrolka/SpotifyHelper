@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Genre Selection</h1>
+        <h1>Selection</h1>
         <form action="/recommend" method="POST">
             <div class="columns">
                 <div class="column">
@@ -25,6 +25,14 @@
                     <br>
                     <button type="button" id="get-recommendations-button" class="button">Clear</button>
                 </div>
+                <div class="column">
+                    <label>Artist (optional):</label>
+                    <input type="text" id="searchName" name="name">
+                </div>
+                <div class="column">
+                    <label>Track (optional):</label>
+                    <input type="text" id="searchTrack" name="track">
+                </div>
             </div>
             <button class="button" type="submit">Submit</button>
         </form>
@@ -32,6 +40,13 @@
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     {% if result %}
     <h1 style="color: white;">Recommendation result:</h1>
+    <h2 style="color: white;">Genres: {{ genres_selected }}</h2>
+    {% if artist_selected != '0' %}
+    <h2 style="color: white;">Artist: {{ artist_selected }}</h2>
+    {% endif %}
+    {% if track_selected != '0' %}
+    <h2 style="color: white;">Track: {{ track_selected }}</h2>
+    {% endif %}
     <table>
         <thead>
             <tr>

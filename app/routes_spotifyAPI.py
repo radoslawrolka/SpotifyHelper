@@ -38,15 +38,32 @@ def search_result(item, name):
 @app.route('/recommend', methods=['GET', 'POST'])
 def recommend():
     if request.method == 'POST':
-        selected = ",".join(request.json.get('selected_genres'))
-        return jsonify(selected)
+        genres = ",".join(request.json.get('selected_genres'))
+        artist_name = request.json.get('artist_name', '')
+        track_name = request.json.get('track_name', '')
+        if artist_name == '':
+            artist_name = '0'
+        if track_name == '':
+            track_name = '0'
+        return jsonify(genre=genres, artist=artist_name, track=track_name)
     else:
         genres = spotifyAPI.get_genre_seeds()
         return render_template('recommend.html', genres=genres)
 
 
-@app.route('/recommend/result/<genres>', methods=['GET', 'POST'])
-def recommend_result(genres):
-    result = spotifyAPI.get_recommendations(genres)
+@app.route('/recommend/result/<genres>/<artist>/<track>', methods=['GET', 'POST'])
+def recommend_result(genres, artist, track):
+    track_id = None
+    artist_id = None
+    if artist != "0":
+        artist_id = spotifyAPI.search("artist", artist, 1)[0]['id']
+    if track != "0":
+        track_id = spotifyAPI.search("track", track, 1)[0]['id']
+    result = spotifyAPI.get_recommendations(genres, artist_id, track_id)
     gen = spotifyAPI.get_genre_seeds()
-    return render_template('recommend-result.html', genres=gen, result=result)
+    return render_template('recommend-result.html',
+                           genres=gen,
+                           result=result,
+                           genres_selected=genres.split(','),
+                           artist_selected=artist,
+                           track_selected=track)

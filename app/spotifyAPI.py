@@ -98,7 +98,8 @@ def artist_data(jsonf):
             "image": image,
             "followers": element['followers']['total'],
             "genres": ", ".join(element['genres']),
-            "artist_name": element['name']
+            "artist_name": element['name'],
+            "id": element['id']
         })
     return result
 
@@ -114,7 +115,8 @@ def album_data(jsonf):
             "artist_name": element['artists'][0]['name'],
             "spotify_url": element['external_urls']['spotify'],
             "image": image,
-            "album_name": element['name']
+            "album_name": element['name'],
+            "id": element['id']
         })
     return result
 
@@ -132,7 +134,8 @@ def track_data(jsonf):
             "duration_ms": element['duration_ms'],
             "spotify_url": element['external_urls']['spotify'],
             "track_name": element['name'],
-            "image": image
+            "image": image,
+            "id": element['id']
         })
     return result
 
@@ -176,12 +179,15 @@ def get_genre_seeds():
     json_result = json.loads(result.content)["genres"]
     return json_result
 
-def get_recommendations(data):
+def get_recommendations(genre, artist, track):
     url = "https://api.spotify.com/v1/recommendations"
     headers = get_auth_header()
-    query = f"limit=5&seed_genres={data}"
-
+    query = f"limit=5&seed_genres={genre}"
     query_url = url + "?" + query
+    if artist is not None:
+        query_a = f"&seed_artists={artist}"
+    if track is not None:
+        query_t = f"&seed_tracks={track}"
     result = requests.get(query_url, headers=headers)
     json_result = json.loads(result.content)["tracks"]
     return track_data(json_result)
