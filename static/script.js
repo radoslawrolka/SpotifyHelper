@@ -1,9 +1,9 @@
 const multiSelectWithoutCtrl = ( elemSelector ) => {
-  
+
   let options = document.querySelectorAll(`${elemSelector} option`);
-  
+
   options.forEach(function (element) {
-      element.addEventListener("mousedown", 
+      element.addEventListener("mousedown",
           function (e) {
               e.preventDefault();
               element.parentElement.focus();
@@ -12,7 +12,10 @@ const multiSelectWithoutCtrl = ( elemSelector ) => {
           }, false );
   });
 
+
 }
+
+
 
 
 multiSelectWithoutCtrl('#mySelectInput') /* Can use ID or Class */
