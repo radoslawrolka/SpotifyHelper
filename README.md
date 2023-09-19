@@ -49,7 +49,7 @@ The functions are divided into three categories:
 Data is acquired using Beautiful Soup 4 (BS4) scraped 
 from [Spotify Charts](https://chartmasters.org/) to get the most streamed artists, tracks and albums on Spotify of all time.
 <img src="images/most-streamed-artists.png" width="1005">
-<img src="images/most-streamed-tracks.png" width="500"> <img src="images/most-streamed-albums.png" width="500">
+<img src="images/most-streamed-tracks.png" width="400"> <img src="images/most-streamed-albums.png" width="400">
 
 ## Spotify Utilities
 Data is acquired using the [Spotify API](https://developer.spotify.com/documentation/web-api/) to authorize user, get the recommendations and search results.
