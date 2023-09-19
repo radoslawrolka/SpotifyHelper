@@ -67,3 +67,12 @@ def recommend_result(genres, artist, track):
                            genres_selected=genres.split(','),
                            artist_selected=artist,
                            track_selected=track)
+
+@app.route('/your-recommend', methods=['GET', 'POST'])
+def your_recommend():
+    your_artist = spotifyAPI.get_top_data("artists")
+    artists = ",".join([artist['id'] for artist in your_artist[:3]])
+    your_track = spotifyAPI.get_top_data("tracks")
+    tracks = ",".join([track['id'] for track in your_track[:3]])
+    result = spotifyAPI.get_recommendations(None, artists, tracks)
+    return render_template('your-recommend.html', data=result, artists=artists, tracks=tracks)

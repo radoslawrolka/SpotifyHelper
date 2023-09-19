@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
+    <title>SpotifyHelper</title>
+</head>
+<body>
+    <a href="/home"><img src="https://drive.google.com/uc?id=1840-ofHIgLGI9x0Bpsf5XYgOxZwNtko2" alt="Home" width="100" height="100"></a>
+    <h1 style="color: white;">Recommendations based on your history listening</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Position</th>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in data %}
+            <tr>
+                <td>{{ record['position'] }}</td>
+                <td><a href="/track/{{ record['title'] }}">{{ record['track_name'] }}</a></td>
+                <td><a href="/artist/{{ record['artist'] }}">{{ record['artist_name'] }}</a></td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

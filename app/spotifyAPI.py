@@ -182,12 +182,14 @@ def get_genre_seeds():
 def get_recommendations(genre, artist, track):
     url = "https://api.spotify.com/v1/recommendations"
     headers = get_auth_header()
-    query = f"limit=5&seed_genres={genre}"
+    query = f"limit=5"
     query_url = url + "?" + query
+    if genre is not None:
+        query_url += f"&seed_genres={genre}"
     if artist is not None:
-        query_a = f"&seed_artists={artist}"
+        query_url += f"&seed_artists={artist}"
     if track is not None:
-        query_t = f"&seed_tracks={track}"
+        query_url += f"&seed_tracks={track}"
     result = requests.get(query_url, headers=headers)
     json_result = json.loads(result.content)["tracks"]
     return track_data(json_result)
