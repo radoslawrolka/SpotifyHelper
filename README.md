@@ -48,24 +48,25 @@ The functions are divided into three categories:
 ## Ranking
 Data is acquired using Beautiful Soup 4 (BS4) scraped 
 from [Spotify Charts](https://chartmasters.org/) to get the most streamed artists, tracks and albums on Spotify of all time.
-<img src="images/most-streamed-artists.png" width="1005">
-<img src="images/most-streamed-tracks.png" width="400"> <img src="images/most-streamed-albums.png" width="400">
+<img src="images/most-streamed-artists.png" width="831">
+<img src="images/most-streamed-tracks.png" width="413"> <img src="images/most-streamed-albums.png" width="413">
 
 ## Spotify Utilities
 Data is acquired using the [Spotify API](https://developer.spotify.com/documentation/web-api/) to authorize user, get the recommendations and search results.
 - Search:
- 
-  <img src="images/search.png" width="480"> <img src="images/search-result.png" width="480">
-  <img src="images/show.png" width="965">
+
+<img src="images/search.png" width="413"> <img src="images/search-result.png" width="413"> 
+<img src="images/show.png" width="831">
 - Recommendations:
   
-  <img src="images/recommendations.png" width="480"> <img src="images/recommendations-result.png" width="480">
+<img src="images/recommendations.png" width="413"> <img src="images/recommendations-result.png" width="413">
 - Personalized Recommendations:
-  <img src="images/your-history.png" width="965">
+<img src="images/your-history.png" width="831">
 
 ## For You
 User's history of listening on Spotify collected over the last three months.
 - Your most streamed tracks:
-  <img src="images/top-tracks.png" width="1000">
+<img src="images/top-tracks.png" width="1000">
+
 - Your most streamed artists:
-  <img src="images/top-artists.png" width="1000">
+<img src="images/top-artists.png" width="1000">
