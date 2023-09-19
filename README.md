@@ -7,7 +7,7 @@ Overall, the project combines modern web technologies with external APIs and dat
 Requirements are listed in `requirements.txt` file.
 ```
 beautifulsoup4==4.11.1
-Flask==2.2.2
+Flask==2.2.5
 Requests==2.31.0
 ```
 
